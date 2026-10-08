@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cover Tracker — Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f2f1ee; --surface:#fff; --raised:#faf9f7;
+  --fg:#1b1d21; --muted:#5f646d; --faint:#8b9099;
+  --line:#dedcd7; --accent:#b4651a; --accent-soft:#f3e4d4;
+  --good:#1f7a4d; --good-soft:#dff0e6;
+  --bad:#a52d2d; --bad-soft:#f6dedd;
+  --hold:#6b6257; --hold-soft:#ece8e1;
+  --display:"Saira Condensed",Haettenschweiler,"Arial Narrow",sans-serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14161a; --surface:#1d2026; --raised:#23272e;
+  --fg:#eceef1; --muted:#a2a8b2; --faint:#767d88;
+  --line:#2f343c; --accent:#e8a05c; --accent-soft:#3a2d20;
+  --good:#5fd39a; --good-soft:#15301f;
+  --bad:#f08a86; --bad-soft:#331a1a;
+  --hold:#b8ad9e; --hold-soft:#2b2822;
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;
+  padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(48px + env(safe-area-inset-bottom,0px))}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,40px);
+  margin:0;line-height:1;text-wrap:balance}
+.wk{font-family:var(--data);font-size:12px;font-weight:600;color:var(--accent);
+  letter-spacing:.08em;text-transform:uppercase}
+.sub{color:var(--muted);font-size:13.5px;margin:6px 0 0;max-width:60ch}
+.rail{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:20px 0 10px}
+@media (max-width:520px){.rail{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--surface);padding:11px 12px 12px;min-width:0}
+.tile dt{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+  font-weight:600;margin:0 0 3px}
+.tile dd{margin:0;font-family:var(--data);font-weight:600;font-size:18px;
+  font-variant-numeric:tabular-nums}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 20px}
+button{font-family:var(--body);font-size:13px;font-weight:600;color:var(--fg);
+  background:var(--raised);border:1px solid var(--line);border-radius:7px;
+  padding:7px 13px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){button.primary{color:#14161a}}
+.stamp{font-family:var(--data);font-size:11.5px;color:var(--faint)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--faint);margin-right:5px;vertical-align:middle}
+.dot.ok{background:var(--good)} .dot.err{background:var(--bad)}
+.note{border:1px solid var(--line);border-left:3px solid var(--accent);
+  background:var(--raised);border-radius:7px;padding:11px 13px;margin-bottom:20px;
+  font-size:13px;color:var(--muted);line-height:1.5}
+.note b{color:var(--fg);font-weight:600}
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.card.live{border-color:var(--accent)}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:13px 15px 11px}
+.pick{min-width:0}
+.pick h2{font-family:var(--display);font-weight:700;font-size:25px;margin:0;line-height:1.05}
+.pick .ln{font-family:var(--data);font-size:13px;font-weight:600;color:var(--accent)}
+.pick p{margin:3px 0 0;font-size:12.5px;color:var(--muted)}
+.pill{flex:none;font-family:var(--data);font-size:10.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;
+  background:var(--hold-soft);color:var(--hold);white-space:nowrap}
+.pill.on{background:var(--good-soft);color:var(--good)}
+.pill.off{background:var(--bad-soft);color:var(--bad)}
+.pill.push{background:var(--accent-soft);color:var(--accent)}
+.score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:4px 15px 12px}
+.side{min-width:0}.side.away{text-align:right}
+.side .nm{font-size:12px;color:var(--muted);font-weight:500;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .pts{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;
+  font-variant-numeric:tabular-nums}
+.at{font-family:var(--data);font-size:11px;color:var(--faint)}
+.edge{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 15px;background:var(--raised);border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--muted)}
+.edge .big{font-family:var(--data);font-weight:600;font-size:15px;
+  font-variant-numeric:tabular-nums;color:var(--fg)}
+.edge .big.on{color:var(--good)}.edge .big.off{color:var(--bad)}
+.manual{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:9px 15px 12px;border-top:1px dashed var(--line);font-size:12px;color:var(--faint)}
+.manual label{display:flex;align-items:center;gap:5px}
+input,select{font-family:var(--data);font-size:13px;font-weight:600;padding:5px 7px;
+  border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
+input[type=number]{width:58px;text-align:center}
+input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.editor{border:1px solid var(--accent);border-radius:11px;background:var(--surface);
+  padding:14px 15px 16px;margin-bottom:20px}
+.editor h3{font-family:var(--display);font-size:21px;margin:0 0 3px;font-weight:700}
+.editor .hint{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.erow{display:grid;grid-template-columns:1fr auto 1fr auto auto auto;gap:7px;
+  align-items:center;margin-bottom:9px}
+@media (max-width:620px){.erow{grid-template-columns:1fr 1fr}}
+.erow select{min-width:0;width:100%}
+.efoot{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:13px;
+  padding-top:13px;border-top:1px solid var(--line)}
+.lab{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+  font-weight:600;margin:12px 0 5px}
+.kill{padding:5px 9px;font-size:12px}
+footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--faint);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap" id="root"></div>
+<script>
+var TEAMS={Cardinals:"ARI",Falcons:"ATL",Ravens:"BAL",Bills:"BUF",Panthers:"CAR",
+Bears:"CHI",Bengals:"CIN",Browns:"CLE",Cowboys:"DAL",Broncos:"DEN",Lions:"DET",
+Packers:"GB",Texans:"HOU",Colts:"IND",Jaguars:"JAX",Chiefs:"KC",Raiders:"LV",
+Chargers:"LAC",Rams:"LAR",Dolphins:"MIA",Vikings:"MIN",Patriots:"NE",Saints:"NO",
+Giants:"NYG",Jets:"NYJ",Eagles:"PHI",Steelers:"PIT","49ers":"SF",Seahawks:"SEA",
+Buccaneers:"TB",Titans:"TEN",Commanders:"WSH"};
+var NAMES=Object.keys(TEAMS).sort();
+var FEED="https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
+var REFRESH=20000;
+var STORE="coverTrackerV1";
+
+var DEFAULT={week:5,entry:"Storm Surge 0626",bankroll:6600,picks:[
+ {team:"Browns",opp:"Jets",home:false,line:2.5,stake:1800},
+ {team:"Lions",opp:"Cardinals",home:false,line:-5.5,stake:1500},
+ {team:"Ravens",opp:"Falcons",home:false,line:3.5,stake:1100}]};
+
+var DATA=load();
+function load(){
+  try{ var s=localStorage.getItem(STORE);
+    if(s){ var d=JSON.parse(s); if(d&&d.picks) return d; } }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT));
+}
+function save(){ try{ localStorage.setItem(STORE,JSON.stringify(DATA)); }catch(e){} }
+
+var live={}, editing=false, draft=null;
+var feedState="idle", stampMsg="Starting…", timer=null, fails=0;
+
+function k(p){return p.team+"|"+p.opp;}
+function slot(p){ if(!live[k(p)]) live[k(p)]={pts:null,opp:null,status:"",live:false,started:false};
+  return live[k(p)]; }
+function fmt(n){return n.toLocaleString("en-US");}
+function signed(n){return (n>0?"+":n<0?"−":"")+fmt(Math.abs(n));}
+function half(n){var a=Math.abs(n);return (n>0?"+":n<0?"−":"")+(a%1?a.toFixed(1):String(a));}
+function bare(n){var a=Math.abs(n);return a%1?a.toFixed(1):String(a);}
+function cushion(p){var s=slot(p);
+  if(s.pts===null||s.opp===null) return null;
+  return (s.pts-s.opp)+p.line;}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;
+  if(x!==undefined)e.textContent=x;return e;}
+function teamSelect(v,fn){var s=document.createElement("select");
+  NAMES.forEach(function(n){var o=document.createElement("option");
+    o.value=n;o.textContent=n;if(n===v)o.selected=true;s.appendChild(o);});
+  s.addEventListener("change",function(){fn(s.value);});return s;}
+
+function render(){
+  var root=document.getElementById("root"); root.textContent="";
+  var head=el("header");
+  head.appendChild(el("h1","","Cover Tracker"));
+  head.appendChild(el("span","wk","Week "+DATA.week+" · "+DATA.entry));
+  root.appendChild(head);
+  root.appendChild(el("p","sub","Live scores refresh every 20 seconds. A pick covers when its "
+    +"margin beats the number it is laying or taking."));
+
+  var risk=DATA.picks.reduce(function(a,p){return a+p.stake;},0), swing=0, graded=false;
+  DATA.picks.forEach(function(p){var c=cushion(p),s=slot(p);
+    if(c!==null&&s.started){graded=true;swing+=c>0?p.stake:c<0?-p.stake:0;}});
+
+  var rail=el("dl","rail");
+  [["Bankroll",fmt(DATA.bankroll),""],["At risk",fmt(risk),""],
+   ["Live swing",graded?signed(swing):"—",graded?(swing>0?"var(--good)":swing<0?"var(--bad)":""):""],
+   ["If it ended now",fmt(DATA.bankroll+swing),""]].forEach(function(t){
+    var d=el("div","tile");d.appendChild(el("dt","",t[0]));
+    var dd=el("dd","",t[1]);if(t[2])dd.style.color=t[2];
+    d.appendChild(dd);rail.appendChild(d);});
+  root.appendChild(rail);
+
+  var bar=el("div","bar");
+  var rf=el("button","","Refresh now");rf.type="button";
+  rf.addEventListener("click",function(){poll(true);});bar.appendChild(rf);
+  if(!editing){var ed=el("button","","Edit picks");ed.type="button";
+    ed.addEventListener("click",function(){draft=JSON.parse(JSON.stringify(DATA));
+      editing=true;render();});bar.appendChild(ed);}
+  var st=el("span","stamp");
+  var dot=el("span","dot"+(feedState==="ok"?" ok":feedState==="err"?" err":""));
+  st.appendChild(dot);st.appendChild(document.createTextNode(stampMsg));
+  bar.appendChild(st);
+  root.appendChild(bar);
+
+  if(feedState==="err"){
+    var n=el("div","note");
+    n.innerHTML="<b>Live scores are not loading in this browser.</b> That is usually the browser "
+      +"refusing a cross-site request from a file opened off disk. Two fixes: open this file in "
+      +"Safari or Firefox, which are more permissive, or just type the scores in below — the "
+      +"cover math and swing work either way.";
+    root.appendChild(n);
+  }
+
+  if(editing&&draft) root.appendChild(editor());
+
+  var cards=el("div","cards");
+  DATA.picks.forEach(function(p){cards.appendChild(card(p));});
+  if(!DATA.picks.length){var e2=el("div","note");
+    e2.innerHTML="<b>No picks yet.</b> Use Edit picks to add this week's.";cards.appendChild(e2);}
+  root.appendChild(cards);
+
+  var f=el("footer");
+  f.innerHTML="Covering means the pick is ahead of its number right now, not that it won.<br>"
+    +"Push returns the stake. Picks are saved in this browser.";
+  root.appendChild(f);
+}
+
+function card(p){
+  var s=slot(p),c=cushion(p);
+  var w=el("div","card"+(s.live?" live":""));
+  var verdict="Not started",vc="";
+  if(c!==null&&s.started){
+    if(c>0){verdict="Covering";vc="on";}
+    else if(c<0){verdict="Not covering";vc="off";}
+    else{verdict="On the number";vc="push";}}
+  var top=el("div","top"),pick=el("div","pick");
+  var h2=el("h2","",p.team+" ");h2.appendChild(el("span","ln",half(p.line)));
+  pick.appendChild(h2);
+  pick.appendChild(el("p","",(p.home?"vs ":"at ")+p.opp+" · "+fmt(p.stake)+" pts"));
+  top.appendChild(pick);top.appendChild(el("span","pill "+vc,verdict));
+  var away=p.home?{nm:p.opp,v:s.opp}:{nm:p.team,v:s.pts};
+  var home=p.home?{nm:p.team,v:s.pts}:{nm:p.opp,v:s.opp};
+  var sc=el("div","score");
+  var a=el("div","side away");a.appendChild(el("div","nm",away.nm));
+  a.appendChild(el("div","pts",away.v===null?"–":String(away.v)));
+  sc.appendChild(a);sc.appendChild(el("span","at","at"));
+  var h=el("div","side home");h.appendChild(el("div","nm",home.nm));
+  h.appendChild(el("div","pts",home.v===null?"–":String(home.v)));
+  sc.appendChild(h);
+  var edge=el("div","edge");
+  edge.appendChild(el("span","",s.status||"Kickoff pending"));
+  var big=el("span","big "+(c===null||!s.started?"":c>0?"on":c<0?"off":""));
+  big.textContent=(c===null||!s.started)?"—"
+    :(c>0?"Clear by "+bare(c):c<0?"Short by "+bare(c):"Exactly on it");
+  edge.appendChild(big);
+  var man=el("div","manual");
+  man.appendChild(el("span","","Enter scores"));
+  [[p.team,"pts"],[p.opp,"opp"]].forEach(function(fl){
+    var l=el("label","",fl[0]);
+    var i=document.createElement("input");i.type="number";i.min="0";i.step="1";
+    i.value=s[fl[1]]===null?"":s[fl[1]];
+    i.addEventListener("input",function(){
+      s[fl[1]]=i.value===""?null:Number(i.value);
+      s.started=s.pts!==null&&s.opp!==null;
+      if(s.started&&!s.status)s.status="Entered by hand";
+      render();});
+    l.appendChild(i);man.appendChild(l);});
+  w.appendChild(top);w.appendChild(sc);w.appendChild(edge);w.appendChild(man);
+  return w;
+}
+
+function editor(){
+  var b=el("div","editor");
+  b.appendChild(el("h3","","Edit picks"));
+  b.appendChild(el("p","hint","Saved in this browser on this device. Line takes a sign: "
+    +"+3 takes points, -5.5 lays them."));
+  var meta=el("div","erow");
+  var wl=el("label","","Week ");
+  var wi=document.createElement("input");wi.type="number";wi.min="1";wi.max="18";
+  wi.value=draft.week;
+  wi.addEventListener("input",function(){draft.week=Number(wi.value)||draft.week;});
+  wl.appendChild(wi);
+  var bl=el("label","","Bankroll ");
+  var bi=document.createElement("input");bi.type="number";bi.min="0";bi.step="100";
+  bi.value=draft.bankroll;bi.style.width="86px";
+  bi.addEventListener("input",function(){draft.bankroll=Number(bi.value)||0;});
+  bl.appendChild(bi);
+  meta.appendChild(wl);meta.appendChild(bl);b.appendChild(meta);
+  b.appendChild(el("div","lab","My pick / line / stake"));
+  draft.picks.forEach(function(p,ix){
+    var row=el("div","erow");
+    row.appendChild(teamSelect(p.team,function(v){p.team=v;}));
+    var ha=document.createElement("select");
+    [["vs","true"],["at","false"]].forEach(function(o){
+      var op=document.createElement("option");op.value=o[1];op.textContent=o[0];
+      if(String(p.home)===o[1])op.selected=true;ha.appendChild(op);});
+    ha.addEventListener("change",function(){p.home=ha.value==="true";});
+    row.appendChild(ha);
+    row.appendChild(teamSelect(p.opp,function(v){p.opp=v;}));
+    var ln=document.createElement("input");ln.type="number";ln.step="0.5";ln.value=p.line;
+    ln.addEventListener("input",function(){p.line=Number(ln.value);});
+    row.appendChild(ln);
+    var sk=document.createElement("input");sk.type="number";sk.min="0";sk.step="50";
+    sk.value=p.stake;sk.style.width="74px";
+    sk.addEventListener("input",function(){p.stake=Number(sk.value)||0;});
+    row.appendChild(sk);
+    var rm=el("button","kill","Remove");rm.type="button";
+    rm.addEventListener("click",function(){draft.picks.splice(ix,1);render();});
+    row.appendChild(rm);
+    b.appendChild(row);});
+  var foot=el("div","efoot");
+  var sv=el("button","primary","Save");sv.type="button";
+  sv.addEventListener("click",function(){
+    if(draft.picks.some(function(p){return p.team===p.opp;})) return;
+    DATA=JSON.parse(JSON.stringify(draft));save();
+    editing=false;draft=null;live={};render();poll(true);});
+  var add=el("button","","Add a pick");add.type="button";
+  add.addEventListener("click",function(){
+    draft.picks.push({team:"Browns",opp:"Jets",home:false,line:0,stake:0});render();});
+  var cn=el("button","","Cancel");cn.type="button";
+  cn.addEventListener("click",function(){editing=false;draft=null;render();});
+  foot.appendChild(sv);foot.appendChild(add);foot.appendChild(cn);
+  b.appendChild(foot);
+  return b;
+}
+
+function applyFeed(j){
+  var ev=(j&&j.events)||[],hits=0;
+  DATA.picks.forEach(function(p){
+    var ab=TEAMS[p.team],ob=TEAMS[p.opp];
+    for(var i=0;i<ev.length;i++){
+      var comp=ev[i].competitions&&ev[i].competitions[0];
+      if(!comp||!comp.competitors)continue;
+      var mine=null,th=null;
+      comp.competitors.forEach(function(c){var a=c.team&&c.team.abbreviation;
+        if(a===ab)mine=c;if(a===ob)th=c;});
+      if(!mine||!th)continue;
+      var stt=(comp.status&&comp.status.type)||{},s=slot(p);
+      s.pts=mine.score===undefined?null:Number(mine.score);
+      s.opp=th.score===undefined?null:Number(th.score);
+      s.status=stt.shortDetail||stt.description||"";
+      s.live=stt.state==="in";
+      s.started=stt.state==="in"||stt.state==="post";
+      hits++;break;}});
+  return hits;
+}
+
+function poll(manual){
+  if(manual) stampMsg="Checking…", render();
+  fetch(FEED,{cache:"no-store"})
+    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(function(j){
+      var hits=applyFeed(j);fails=0;feedState="ok";
+      stampMsg="Live · "+new Date().toLocaleTimeString("en-US",
+        {hour:"numeric",minute:"2-digit",second:"2-digit"})+" · "+hits+" of "+DATA.picks.length;
+      render();})
+    .catch(function(){
+      fails++;
+      if(fails>=2){feedState="err";stampMsg="Live feed blocked";}
+      else{stampMsg="Retrying…";}
+      render();});
+}
+
+render();
+poll(true);
+timer=setInterval(poll,REFRESH);
+document.addEventListener("visibilitychange",function(){
+  if(document.visibilityState==="visible") poll(true);});
+</script>
+</body>
+</html>
