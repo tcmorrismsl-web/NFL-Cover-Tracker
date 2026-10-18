@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cover Tracker — Live</title>
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -40,16 +39,14 @@
 }}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);
-  -webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-text-size-adjust:100%}
 .wrap{max-width:720px;margin:0 auto;padding-inline:16px;
   padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(48px + env(safe-area-inset-bottom,0px))}
 header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,40px);
-  margin:0;line-height:1;text-wrap:balance}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,7vw,40px);margin:0;line-height:1}
 .wk{font-family:var(--data);font-size:12px;font-weight:600;color:var(--accent);
   letter-spacing:.08em;text-transform:uppercase}
-.sub{color:var(--muted);font-size:13.5px;margin:6px 0 0;max-width:60ch}
+.sub{color:var(--muted);font-size:13.5px;margin:6px 0 0;max-width:62ch}
 .rail{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
   border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:20px 0 10px}
 @media (max-width:520px){.rail{grid-template-columns:repeat(2,1fr)}}
@@ -67,12 +64,11 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 @media (prefers-color-scheme:dark){button.primary{color:#14161a}}
 .stamp{font-family:var(--data);font-size:11.5px;color:var(--faint)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;
-  background:var(--faint);margin-right:5px;vertical-align:middle}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--faint);
+  margin-right:5px;vertical-align:middle}
 .dot.ok{background:var(--good)} .dot.err{background:var(--bad)}
-.note{border:1px solid var(--line);border-left:3px solid var(--accent);
-  background:var(--raised);border-radius:7px;padding:11px 13px;margin-bottom:20px;
-  font-size:13px;color:var(--muted);line-height:1.5}
+.note{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--raised);
+  border-radius:7px;padding:11px 13px;margin-bottom:20px;font-size:13px;color:var(--muted);line-height:1.5}
 .note b{color:var(--fg);font-weight:600}
 .cards{display:flex;flex-direction:column;gap:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:11px;overflow:hidden}
@@ -82,95 +78,130 @@ button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .pick h2{font-family:var(--display);font-weight:700;font-size:25px;margin:0;line-height:1.05}
 .pick .ln{font-family:var(--data);font-size:13px;font-weight:600;color:var(--accent)}
 .pick p{margin:3px 0 0;font-size:12.5px;color:var(--muted)}
-.pill{flex:none;font-family:var(--data);font-size:10.5px;font-weight:600;
-  letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;
-  background:var(--hold-soft);color:var(--hold);white-space:nowrap}
+.pill{flex:none;font-family:var(--data);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;padding:4px 8px;border-radius:5px;background:var(--hold-soft);
+  color:var(--hold);white-space:nowrap}
 .pill.on{background:var(--good-soft);color:var(--good)}
 .pill.off{background:var(--bad-soft);color:var(--bad)}
 .pill.push{background:var(--accent-soft);color:var(--accent)}
 .score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:4px 15px 12px}
 .side{min-width:0}.side.away{text-align:right}
-.side .nm{font-size:12px;color:var(--muted);font-weight:500;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .nm{font-size:12px;color:var(--muted);font-weight:500;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
 .side .pts{font-family:var(--display);font-weight:700;font-size:34px;line-height:1;
   font-variant-numeric:tabular-nums}
 .at{font-family:var(--data);font-size:11px;color:var(--faint)}
-.edge{display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:9px 15px;background:var(--raised);border-top:1px solid var(--line);
-  font-size:12.5px;color:var(--muted)}
+.edge{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 15px;
+  background:var(--raised);border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 .edge .big{font-family:var(--data);font-weight:600;font-size:15px;
   font-variant-numeric:tabular-nums;color:var(--fg)}
 .edge .big.on{color:var(--good)}.edge .big.off{color:var(--bad)}
-.manual{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  padding:9px 15px 12px;border-top:1px dashed var(--line);font-size:12px;color:var(--faint)}
+.manual{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 15px 12px;
+  border-top:1px dashed var(--line);font-size:12px;color:var(--faint)}
 .manual label{display:flex;align-items:center;gap:5px}
-input,select{font-family:var(--data);font-size:13px;font-weight:600;padding:5px 7px;
+input{font-family:var(--data);font-size:13px;font-weight:600;padding:5px 7px;
   border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
-input[type=number]{width:58px;text-align:center}
-input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input[type=number]{width:62px;text-align:center}
+input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .editor{border:1px solid var(--accent);border-radius:11px;background:var(--surface);
   padding:14px 15px 16px;margin-bottom:20px}
 .editor h3{font-family:var(--display);font-size:21px;margin:0 0 3px;font-weight:700}
 .editor .hint{font-size:12.5px;color:var(--muted);margin:0 0 14px}
-.erow{display:grid;grid-template-columns:1fr auto 1fr auto auto auto;gap:7px;
-  align-items:center;margin-bottom:9px}
-@media (max-width:620px){.erow{grid-template-columns:1fr 1fr}}
-.erow select{min-width:0;width:100%}
-.efoot{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:13px;
-  padding-top:13px;border-top:1px solid var(--line)}
+.slate{display:flex;flex-direction:column;gap:7px;margin-bottom:6px}
+.g{display:grid;grid-template-columns:62px 1fr 1fr;gap:7px;align-items:stretch}
+@media (max-width:480px){.g{grid-template-columns:52px 1fr 1fr}}
+.g .when{font-family:var(--data);font-size:10px;color:var(--faint);display:flex;
+  align-items:center;line-height:1.2}
+.opt{text-align:left;padding:8px 9px;border-radius:7px;border:1px solid var(--line);
+  background:var(--bg);cursor:pointer;min-width:0}
+.opt .t{font-weight:600;font-size:13px;display:block;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.opt .l{font-family:var(--data);font-size:11.5px;color:var(--muted)}
+.opt.sel{background:var(--accent-soft);border-color:var(--accent)}
+.opt.sel .l{color:var(--accent)}
+.opt.dis{opacity:.42;cursor:default}
+.stakes{display:flex;flex-direction:column;gap:7px;margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--line)}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+.efoot{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:13px;padding-top:13px;
+  border-top:1px solid var(--line)}
+.esay{font-size:12.5px;color:var(--muted)}
 .lab{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
-  font-weight:600;margin:12px 0 5px}
-.kill{padding:5px 9px;font-size:12px}
-footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);
-  font-size:12px;color:var(--faint);line-height:1.6}
+  font-weight:600;margin:10px 0 6px}
+footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;
+  color:var(--faint);line-height:1.6}
 </style>
 </head>
 <body>
 <div class="wrap" id="root"></div>
 <script>
+/* ---------------------------------------------------------------
+   SLATE — replaced each week from the pool sheet.
+   fav: "h" if the home team is favoured, "a" if the away team is.
+   --------------------------------------------------------------- */
+var SLATE={
+ week:6, entry:"Storm Surge 0626", bankroll:7400,
+ games:[
+  {a:"Seahawks", h:"Broncos",   fav:"a", sp:2.5,  when:"Thu 8:15"},
+  {a:"Texans",   h:"Jaguars",   fav:"h", sp:3,    when:"Sun 9:30"},
+  {a:"Ravens",   h:"Browns",    fav:"a", sp:5.5,  when:"Sun 1:00"},
+  {a:"Panthers", h:"Eagles",    fav:"h", sp:1.5,  when:"Sun 1:00"},
+  {a:"Bears",    h:"Falcons",   fav:"a", sp:3,    when:"Sun 1:00"},
+  {a:"Saints",   h:"Giants",    fav:"a", sp:1.5,  when:"Sun 1:00"},
+  {a:"Jets",     h:"Patriots",  fav:"h", sp:7.5,  when:"Sun 1:00"},
+  {a:"Steelers", h:"Buccaneers",fav:"a", sp:2.5,  when:"Sun 1:00"},
+  {a:"Titans",   h:"Colts",     fav:"h", sp:7,    when:"Sun 1:00"},
+  {a:"Cardinals",h:"Rams",      fav:"h", sp:12.5, when:"Sun 4:05"},
+  {a:"Bills",    h:"Raiders",   fav:"a", sp:5.5,  when:"Sun 4:25"},
+  {a:"Chargers", h:"Chiefs",    fav:"h", sp:8.5,  when:"Sun 4:25"},
+  {a:"Cowboys",  h:"Packers",   fav:"h", sp:1.5,  when:"Sun 8:20"},
+  {a:"Commanders",h:"49ers",    fav:"h", sp:7.5,  when:"Mon 8:15"}
+ ],
+ // side: "a" or "h" — which team of that game you took
+ picks:[{g:2,side:"h",stake:1700},{g:4,side:"h",stake:1600},{g:6,side:"a",stake:1600}]
+};
+
 var TEAMS={Cardinals:"ARI",Falcons:"ATL",Ravens:"BAL",Bills:"BUF",Panthers:"CAR",
 Bears:"CHI",Bengals:"CIN",Browns:"CLE",Cowboys:"DAL",Broncos:"DEN",Lions:"DET",
 Packers:"GB",Texans:"HOU",Colts:"IND",Jaguars:"JAX",Chiefs:"KC",Raiders:"LV",
 Chargers:"LAC",Rams:"LAR",Dolphins:"MIA",Vikings:"MIN",Patriots:"NE",Saints:"NO",
 Giants:"NYG",Jets:"NYJ",Eagles:"PHI",Steelers:"PIT","49ers":"SF",Seahawks:"SEA",
 Buccaneers:"TB",Titans:"TEN",Commanders:"WSH"};
-var NAMES=Object.keys(TEAMS).sort();
 var FEED="https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
-var REFRESH=20000;
-var STORE="coverTrackerV1";
+var REFRESH=20000, STORE="coverTrackerV2";
 
-var DEFAULT={week:5,entry:"Storm Surge 0626",bankroll:6600,picks:[
- {team:"Browns",opp:"Jets",home:false,line:2.5,stake:1800},
- {team:"Lions",opp:"Cardinals",home:false,line:-5.5,stake:1500},
- {team:"Ravens",opp:"Falcons",home:false,line:3.5,stake:1100}]};
+/* saved picks are kept only while the slate's week matches */
+var DATA=(function(){
+  var d=JSON.parse(JSON.stringify(SLATE));
+  try{
+    var s=JSON.parse(localStorage.getItem(STORE)||"null");
+    if(s && s.week===SLATE.week && s.picks){ d.picks=s.picks; d.bankroll=s.bankroll||d.bankroll; }
+  }catch(e){}
+  return d;
+})();
+function save(){ try{ localStorage.setItem(STORE,
+  JSON.stringify({week:DATA.week,bankroll:DATA.bankroll,picks:DATA.picks})); }catch(e){} }
 
-var DATA=load();
-function load(){
-  try{ var s=localStorage.getItem(STORE);
-    if(s){ var d=JSON.parse(s); if(d&&d.picks) return d; } }catch(e){}
-  return JSON.parse(JSON.stringify(DEFAULT));
-}
-function save(){ try{ localStorage.setItem(STORE,JSON.stringify(DATA)); }catch(e){} }
+var live={}, editing=false, draft=null, feedState="idle", stampMsg="Starting…", fails=0;
 
-var live={}, editing=false, draft=null;
-var feedState="idle", stampMsg="Starting…", timer=null, fails=0;
-
-function k(p){return p.team+"|"+p.opp;}
-function slot(p){ if(!live[k(p)]) live[k(p)]={pts:null,opp:null,status:"",live:false,started:false};
-  return live[k(p)]; }
-function fmt(n){return n.toLocaleString("en-US");}
-function signed(n){return (n>0?"+":n<0?"−":"")+fmt(Math.abs(n));}
-function half(n){var a=Math.abs(n);return (n>0?"+":n<0?"−":"")+(a%1?a.toFixed(1):String(a));}
-function bare(n){var a=Math.abs(n);return a%1?a.toFixed(1):String(a);}
-function cushion(p){var s=slot(p);
+function game(p){ return DATA.games[p.g]; }
+function myTeam(p){ var g=game(p); return p.side==="h"?g.h:g.a; }
+function oppTeam(p){ var g=game(p); return p.side==="h"?g.a:g.h; }
+function isHome(p){ return p.side==="h"; }
+/* line from the pick's point of view: favourite lays, underdog takes */
+function lineOf(p){ var g=game(p); return p.side===g.fav ? -g.sp : g.sp; }
+function key(p){ return p.g+":"+p.side; }
+function slot(p){ if(!live[key(p)]) live[key(p)]={pts:null,opp:null,status:"",live:false,started:false};
+  return live[key(p)]; }
+function fmt(n){ return n.toLocaleString("en-US"); }
+function signed(n){ return (n>0?"+":n<0?"−":"")+fmt(Math.abs(n)); }
+function half(n){ var a=Math.abs(n); return (n>0?"+":n<0?"−":"")+(a%1?a.toFixed(1):String(a)); }
+function bare(n){ var a=Math.abs(n); return a%1?a.toFixed(1):String(a); }
+function cushion(p){ var s=slot(p);
   if(s.pts===null||s.opp===null) return null;
-  return (s.pts-s.opp)+p.line;}
-function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;
-  if(x!==undefined)e.textContent=x;return e;}
-function teamSelect(v,fn){var s=document.createElement("select");
-  NAMES.forEach(function(n){var o=document.createElement("option");
-    o.value=n;o.textContent=n;if(n===v)o.selected=true;s.appendChild(o);});
-  s.addEventListener("change",function(){fn(s.value);});return s;}
+  return (s.pts-s.opp)+lineOf(p); }
+function el(t,c,x){ var e=document.createElement(t); if(c)e.className=c;
+  if(x!==undefined)e.textContent=x; return e; }
 
 function render(){
   var root=document.getElementById("root"); root.textContent="";
@@ -178,198 +209,220 @@ function render(){
   head.appendChild(el("h1","","Cover Tracker"));
   head.appendChild(el("span","wk","Week "+DATA.week+" · "+DATA.entry));
   root.appendChild(head);
-  root.appendChild(el("p","sub","Live scores refresh every 20 seconds. A pick covers when its "
-    +"margin beats the number it is laying or taking."));
+  root.appendChild(el("p","sub","Live scores refresh every 20 seconds. This week's slate and "
+    +"spreads come from the pool sheet — pick three teams, set the stakes."));
 
-  var risk=DATA.picks.reduce(function(a,p){return a+p.stake;},0), swing=0, graded=false;
-  DATA.picks.forEach(function(p){var c=cushion(p),s=slot(p);
-    if(c!==null&&s.started){graded=true;swing+=c>0?p.stake:c<0?-p.stake:0;}});
+  var risk=DATA.picks.reduce(function(a,p){return a+(p.stake||0);},0), swing=0, graded=false;
+  DATA.picks.forEach(function(p){ var c=cushion(p), s=slot(p);
+    if(c!==null&&s.started){ graded=true; swing += c>0?p.stake : c<0?-p.stake : 0; } });
 
   var rail=el("dl","rail");
   [["Bankroll",fmt(DATA.bankroll),""],["At risk",fmt(risk),""],
    ["Live swing",graded?signed(swing):"—",graded?(swing>0?"var(--good)":swing<0?"var(--bad)":""):""],
    ["If it ended now",fmt(DATA.bankroll+swing),""]].forEach(function(t){
-    var d=el("div","tile");d.appendChild(el("dt","",t[0]));
-    var dd=el("dd","",t[1]);if(t[2])dd.style.color=t[2];
-    d.appendChild(dd);rail.appendChild(d);});
+    var d=el("div","tile"); d.appendChild(el("dt","",t[0]));
+    var dd=el("dd","",t[1]); if(t[2])dd.style.color=t[2];
+    d.appendChild(dd); rail.appendChild(d); });
   root.appendChild(rail);
 
   var bar=el("div","bar");
-  var rf=el("button","","Refresh now");rf.type="button";
-  rf.addEventListener("click",function(){poll(true);});bar.appendChild(rf);
-  if(!editing){var ed=el("button","","Edit picks");ed.type="button";
-    ed.addEventListener("click",function(){draft=JSON.parse(JSON.stringify(DATA));
-      editing=true;render();});bar.appendChild(ed);}
+  var rf=el("button","","Refresh now"); rf.type="button";
+  rf.addEventListener("click",function(){poll(true);}); bar.appendChild(rf);
+  if(!editing){
+    var ed=el("button","","Edit picks"); ed.type="button";
+    ed.addEventListener("click",function(){
+      draft={bankroll:DATA.bankroll,picks:JSON.parse(JSON.stringify(DATA.picks))};
+      editing=true; render(); });
+    bar.appendChild(ed);
+  }
   var st=el("span","stamp");
-  var dot=el("span","dot"+(feedState==="ok"?" ok":feedState==="err"?" err":""));
-  st.appendChild(dot);st.appendChild(document.createTextNode(stampMsg));
-  bar.appendChild(st);
-  root.appendChild(bar);
+  st.appendChild(el("span","dot"+(feedState==="ok"?" ok":feedState==="err"?" err":"")));
+  st.appendChild(document.createTextNode(stampMsg));
+  bar.appendChild(st); root.appendChild(bar);
 
   if(feedState==="err"){
     var n=el("div","note");
-    n.innerHTML="<b>Live scores are not loading in this browser.</b> That is usually the browser "
-      +"refusing a cross-site request from a file opened off disk. Two fixes: open this file in "
-      +"Safari or Firefox, which are more permissive, or just type the scores in below — the "
-      +"cover math and swing work either way.";
+    n.innerHTML="<b>Live scores are not loading.</b> Type the scores in on each card instead — "
+      +"the cover maths and the swing work either way.";
     root.appendChild(n);
   }
-
   if(editing&&draft) root.appendChild(editor());
 
   var cards=el("div","cards");
-  DATA.picks.forEach(function(p){cards.appendChild(card(p));});
-  if(!DATA.picks.length){var e2=el("div","note");
-    e2.innerHTML="<b>No picks yet.</b> Use Edit picks to add this week's.";cards.appendChild(e2);}
+  if(!DATA.picks.length){
+    var e2=el("div","note");
+    e2.innerHTML="<b>No picks set.</b> Tap Edit picks and choose three teams from this week's slate.";
+    cards.appendChild(e2);
+  }
+  DATA.picks.forEach(function(p){ cards.appendChild(card(p)); });
   root.appendChild(cards);
 
   var f=el("footer");
   f.innerHTML="Covering means the pick is ahead of its number right now, not that it won.<br>"
-    +"Push returns the stake. Picks are saved in this browser.";
+    +"Push returns the stake. Picks are saved in this browser for Week "+DATA.week+".";
   root.appendChild(f);
 }
 
 function card(p){
-  var s=slot(p),c=cushion(p);
+  var s=slot(p), c=cushion(p), g=game(p), ln=lineOf(p);
   var w=el("div","card"+(s.live?" live":""));
-  var verdict="Not started",vc="";
+  var verdict="Not started", vc="";
   if(c!==null&&s.started){
     if(c>0){verdict="Covering";vc="on";}
     else if(c<0){verdict="Not covering";vc="off";}
-    else{verdict="On the number";vc="push";}}
-  var top=el("div","top"),pick=el("div","pick");
-  var h2=el("h2","",p.team+" ");h2.appendChild(el("span","ln",half(p.line)));
+    else {verdict="On the number";vc="push";}}
+  var top=el("div","top"), pick=el("div","pick");
+  var h2=el("h2","",myTeam(p)+" "); h2.appendChild(el("span","ln",half(ln)));
   pick.appendChild(h2);
-  pick.appendChild(el("p","",(p.home?"vs ":"at ")+p.opp+" · "+fmt(p.stake)+" pts"));
-  top.appendChild(pick);top.appendChild(el("span","pill "+vc,verdict));
-  var away=p.home?{nm:p.opp,v:s.opp}:{nm:p.team,v:s.pts};
-  var home=p.home?{nm:p.team,v:s.pts}:{nm:p.opp,v:s.opp};
+  pick.appendChild(el("p","",(isHome(p)?"vs ":"at ")+oppTeam(p)+" · "+g.when
+    +" · "+fmt(p.stake)+" pts"));
+  top.appendChild(pick); top.appendChild(el("span","pill "+vc,verdict));
+
+  var away=isHome(p)?{nm:oppTeam(p),v:s.opp}:{nm:myTeam(p),v:s.pts};
+  var home=isHome(p)?{nm:myTeam(p),v:s.pts}:{nm:oppTeam(p),v:s.opp};
   var sc=el("div","score");
-  var a=el("div","side away");a.appendChild(el("div","nm",away.nm));
+  var a=el("div","side away"); a.appendChild(el("div","nm",away.nm));
   a.appendChild(el("div","pts",away.v===null?"–":String(away.v)));
-  sc.appendChild(a);sc.appendChild(el("span","at","at"));
-  var h=el("div","side home");h.appendChild(el("div","nm",home.nm));
+  sc.appendChild(a); sc.appendChild(el("span","at","at"));
+  var h=el("div","side home"); h.appendChild(el("div","nm",home.nm));
   h.appendChild(el("div","pts",home.v===null?"–":String(home.v)));
   sc.appendChild(h);
+
   var edge=el("div","edge");
   edge.appendChild(el("span","",s.status||"Kickoff pending"));
   var big=el("span","big "+(c===null||!s.started?"":c>0?"on":c<0?"off":""));
   big.textContent=(c===null||!s.started)?"—"
     :(c>0?"Clear by "+bare(c):c<0?"Short by "+bare(c):"Exactly on it");
   edge.appendChild(big);
-  var man=el("div","manual");
-  man.appendChild(el("span","","Enter scores"));
-  [[p.team,"pts"],[p.opp,"opp"]].forEach(function(fl){
+
+  var man=el("div","manual"); man.appendChild(el("span","","Enter scores"));
+  [[myTeam(p),"pts"],[oppTeam(p),"opp"]].forEach(function(fl){
     var l=el("label","",fl[0]);
-    var i=document.createElement("input");i.type="number";i.min="0";i.step="1";
+    var i=document.createElement("input"); i.type="number"; i.min="0"; i.step="1";
     i.value=s[fl[1]]===null?"":s[fl[1]];
     i.addEventListener("input",function(){
       s[fl[1]]=i.value===""?null:Number(i.value);
       s.started=s.pts!==null&&s.opp!==null;
-      if(s.started&&!s.status)s.status="Entered by hand";
-      render();});
-    l.appendChild(i);man.appendChild(l);});
-  w.appendChild(top);w.appendChild(sc);w.appendChild(edge);w.appendChild(man);
+      if(s.started&&!s.status) s.status="Entered by hand";
+      render(); });
+    l.appendChild(i); man.appendChild(l); });
+
+  w.appendChild(top); w.appendChild(sc); w.appendChild(edge); w.appendChild(man);
   return w;
 }
 
 function editor(){
   var b=el("div","editor");
-  b.appendChild(el("h3","","Edit picks"));
-  b.appendChild(el("p","hint","Saved in this browser on this device. Line takes a sign: "
-    +"+3 takes points, -5.5 lays them."));
-  var meta=el("div","erow");
-  var wl=el("label","","Week ");
-  var wi=document.createElement("input");wi.type="number";wi.min="1";wi.max="18";
-  wi.value=draft.week;
-  wi.addEventListener("input",function(){draft.week=Number(wi.value)||draft.week;});
-  wl.appendChild(wi);
-  var bl=el("label","","Bankroll ");
-  var bi=document.createElement("input");bi.type="number";bi.min="0";bi.step="100";
-  bi.value=draft.bankroll;bi.style.width="86px";
-  bi.addEventListener("input",function(){draft.bankroll=Number(bi.value)||0;});
-  bl.appendChild(bi);
-  meta.appendChild(wl);meta.appendChild(bl);b.appendChild(meta);
-  b.appendChild(el("div","lab","My pick / line / stake"));
-  draft.picks.forEach(function(p,ix){
-    var row=el("div","erow");
-    row.appendChild(teamSelect(p.team,function(v){p.team=v;}));
-    var ha=document.createElement("select");
-    [["vs","true"],["at","false"]].forEach(function(o){
-      var op=document.createElement("option");op.value=o[1];op.textContent=o[0];
-      if(String(p.home)===o[1])op.selected=true;ha.appendChild(op);});
-    ha.addEventListener("change",function(){p.home=ha.value==="true";});
-    row.appendChild(ha);
-    row.appendChild(teamSelect(p.opp,function(v){p.opp=v;}));
-    var ln=document.createElement("input");ln.type="number";ln.step="0.5";ln.value=p.line;
-    ln.addEventListener("input",function(){p.line=Number(ln.value);});
-    row.appendChild(ln);
-    var sk=document.createElement("input");sk.type="number";sk.min="0";sk.step="50";
-    sk.value=p.stake;sk.style.width="74px";
-    sk.addEventListener("input",function(){p.stake=Number(sk.value)||0;});
-    row.appendChild(sk);
-    var rm=el("button","kill","Remove");rm.type="button";
-    rm.addEventListener("click",function(){draft.picks.splice(ix,1);render();});
-    row.appendChild(rm);
-    b.appendChild(row);});
+  b.appendChild(el("h3","","Pick three"));
+  b.appendChild(el("p","hint","Tap a team to take it with its line. Tap again to drop it. "
+    +"Three maximum."));
+
+  var slate=el("div","slate");
+  DATA.games.forEach(function(g,gi){
+    var row=el("div","g");
+    row.appendChild(el("div","when",g.when));
+    [["a",g.a],["h",g.h]].forEach(function(pair){
+      var side=pair[0], name=pair[1];
+      var ln = side===g.fav ? -g.sp : g.sp;
+      var chosen = draft.picks.some(function(p){return p.g===gi&&p.side===side;});
+      var full = draft.picks.length>=3 && !chosen;
+      var btn=el("button","opt"+(chosen?" sel":"")+(full?" dis":""));
+      btn.type="button";
+      btn.appendChild(el("span","t",name));
+      btn.appendChild(el("span","l",half(ln)+(side==="h"?"  home":"  away")));
+      btn.addEventListener("click",function(){
+        var ix=draft.picks.findIndex(function(p){return p.g===gi&&p.side===side;});
+        if(ix>=0){ draft.picks.splice(ix,1); }
+        else {
+          if(draft.picks.length>=3) return;
+          draft.picks=draft.picks.filter(function(p){return p.g!==gi;});  // one side per game
+          draft.picks.push({g:gi,side:side,stake:0});
+        }
+        render();
+      });
+      row.appendChild(btn);
+    });
+    slate.appendChild(row);
+  });
+  b.appendChild(slate);
+
+  if(draft.picks.length){
+    b.appendChild(el("div","lab","Stakes"));
+    var box=el("div","stakes");
+    draft.picks.forEach(function(p){
+      var g=DATA.games[p.g];
+      var r=el("div","srow");
+      r.appendChild(el("span","",(p.side==="h"?g.h:g.a)+" "+half(p.side===g.fav?-g.sp:g.sp)));
+      var i=document.createElement("input"); i.type="number"; i.min="0"; i.step="50";
+      i.value=p.stake||"";
+      i.addEventListener("input",function(){ p.stake=Number(i.value)||0; });
+      r.appendChild(i); box.appendChild(r);
+    });
+    var br=el("div","srow"); br.appendChild(el("span","","Bankroll"));
+    var bi=document.createElement("input"); bi.type="number"; bi.min="0"; bi.step="100";
+    bi.value=draft.bankroll;
+    bi.addEventListener("input",function(){ draft.bankroll=Number(bi.value)||0; });
+    br.appendChild(bi); box.appendChild(br);
+    b.appendChild(box);
+  }
+
   var foot=el("div","efoot");
-  var sv=el("button","primary","Save");sv.type="button";
+  var sv=el("button","primary","Save"); sv.type="button";
   sv.addEventListener("click",function(){
-    if(draft.picks.some(function(p){return p.team===p.opp;})) return;
-    DATA=JSON.parse(JSON.stringify(draft));save();
-    editing=false;draft=null;live={};render();poll(true);});
-  var add=el("button","","Add a pick");add.type="button";
-  add.addEventListener("click",function(){
-    draft.picks.push({team:"Browns",opp:"Jets",home:false,line:0,stake:0});render();});
-  var cn=el("button","","Cancel");cn.type="button";
-  cn.addEventListener("click",function(){editing=false;draft=null;render();});
-  foot.appendChild(sv);foot.appendChild(add);foot.appendChild(cn);
+    DATA.picks=draft.picks.slice(); DATA.bankroll=draft.bankroll;
+    save(); editing=false; draft=null; live={}; render(); poll(true); });
+  var cn=el("button","","Cancel"); cn.type="button";
+  cn.addEventListener("click",function(){ editing=false; draft=null; render(); });
+  foot.appendChild(sv); foot.appendChild(cn);
+  foot.appendChild(el("span","esay",draft.picks.length+" of 3 selected"));
   b.appendChild(foot);
   return b;
 }
 
 function applyFeed(j){
-  var ev=(j&&j.events)||[],hits=0;
+  var ev=(j&&j.events)||[], hits=0;
   DATA.picks.forEach(function(p){
-    var ab=TEAMS[p.team],ob=TEAMS[p.opp];
+    var ab=TEAMS[myTeam(p)], ob=TEAMS[oppTeam(p)];
     for(var i=0;i<ev.length;i++){
       var comp=ev[i].competitions&&ev[i].competitions[0];
-      if(!comp||!comp.competitors)continue;
+      if(!comp||!comp.competitors) continue;
       var mine=null,th=null;
-      comp.competitors.forEach(function(c){var a=c.team&&c.team.abbreviation;
-        if(a===ab)mine=c;if(a===ob)th=c;});
-      if(!mine||!th)continue;
-      var stt=(comp.status&&comp.status.type)||{},s=slot(p);
+      comp.competitors.forEach(function(c){ var a=c.team&&c.team.abbreviation;
+        if(a===ab)mine=c; if(a===ob)th=c; });
+      if(!mine||!th) continue;
+      var stt=(comp.status&&comp.status.type)||{}, s=slot(p);
       s.pts=mine.score===undefined?null:Number(mine.score);
       s.opp=th.score===undefined?null:Number(th.score);
       s.status=stt.shortDetail||stt.description||"";
-      s.live=stt.state==="in";
-      s.started=stt.state==="in"||stt.state==="post";
-      hits++;break;}});
+      s.live=stt.state==="in"; s.started=stt.state==="in"||stt.state==="post";
+      hits++; break;
+    }
+  });
   return hits;
 }
 
 function poll(manual){
-  if(manual) stampMsg="Checking…", render();
+  if(manual){ stampMsg="Checking…"; render(); }
   fetch(FEED,{cache:"no-store"})
-    .then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
     .then(function(j){
-      var hits=applyFeed(j);fails=0;feedState="ok";
+      var hits=applyFeed(j); fails=0; feedState="ok";
       stampMsg="Live · "+new Date().toLocaleTimeString("en-US",
-        {hour:"numeric",minute:"2-digit",second:"2-digit"})+" · "+hits+" of "+DATA.picks.length;
-      render();})
+        {hour:"numeric",minute:"2-digit",second:"2-digit"})
+        +" · "+hits+" of "+DATA.picks.length;
+      render(); })
     .catch(function(){
       fails++;
-      if(fails>=2){feedState="err";stampMsg="Live feed blocked";}
-      else{stampMsg="Retrying…";}
-      render();});
+      if(fails>=2){ feedState="err"; stampMsg="Live feed blocked"; }
+      else { stampMsg="Retrying…"; }
+      render(); });
 }
 
 render();
 poll(true);
-timer=setInterval(poll,REFRESH);
+setInterval(poll,REFRESH);
 document.addEventListener("visibilitychange",function(){
-  if(document.visibilityState==="visible") poll(true);});
+  if(document.visibilityState==="visible") poll(true); });
 </script>
 </body>
 </html>
