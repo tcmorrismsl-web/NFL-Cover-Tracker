@@ -140,25 +140,29 @@ footer{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-si
    fav: "h" if the home team is favoured, "a" if the away team is.
    --------------------------------------------------------------- */
 var SLATE={
- week:7, entry:"Storm Surge 0626", bankroll:9100,
+ week:8, entry:"Storm Surge 0626", bankroll:12600,
  games:[
-  {a:"Patriots",  h:"Bears",     fav:"h", sp:3,    when:"Thu 8:15"},
-  {a:"Steelers",  h:"Saints",    fav:"a", sp:3.5,  when:"Sun 9:30"},
-  {a:"Bengals",   h:"Ravens",    fav:"h", sp:3,    when:"Sun 1:00"},
-  {a:"Browns",    h:"Titans",    fav:"a", sp:1.5,  when:"Sun 1:00"},
-  {a:"Colts",     h:"Vikings",   fav:"h", sp:6.5,  when:"Sun 1:00"},
-  {a:"Dolphins",  h:"Jets",      fav:"h", sp:4.5,  when:"Sun 1:00"},
-  {a:"Giants",    h:"Texans",    fav:"h", sp:10,   when:"Sun 1:00"},
-  {a:"49ers",     h:"Falcons",   fav:"a", sp:3,    when:"Sun 1:00"},
-  {a:"Buccaneers",h:"Panthers",  fav:"h", sp:3.5,  when:"Sun 1:00"},
-  {a:"Broncos",   h:"Cardinals", fav:"a", sp:4.5,  when:"Sun 4:05"},
-  {a:"Packers",   h:"Lions",     fav:"h", sp:3,    when:"Sun 4:25"},
-  {a:"Rams",      h:"Raiders",   fav:"a", sp:4.5,  when:"Sun 4:25"},
-  {a:"Chiefs",    h:"Seahawks",  fav:"h", sp:2.5,  when:"Sun 8:20"},
-  {a:"Cowboys",   h:"Eagles",    fav:"a", sp:4.5,  when:"Mon 8:15"}
+  {a:"Panthers",  h:"Packers",    fav:"h", sp:3.5,  when:"Thu 8:15"},
+  {a:"Cardinals", h:"Cowboys",    fav:"h", sp:6.5,  when:"Sun 1:00"},
+  {a:"Falcons",   h:"Buccaneers", fav:"h", sp:2.5,  when:"Sun 1:00"},
+  {a:"Ravens",    h:"Bills",      fav:"h", sp:3,    when:"Sun 1:00"},
+  {a:"Browns",    h:"Steelers",   fav:"h", sp:3.5,  when:"Sun 1:00"},
+  {a:"Colts",     h:"Jaguars",    fav:"h", sp:9.5,  when:"Sun 1:00"},
+  {a:"Raiders",   h:"Jets",       fav:"h", sp:1.5,  when:"Sun 1:00"},
+  {a:"Vikings",   h:"Lions",      fav:"h", sp:3,    when:"Sun 1:00"},
+  {a:"Titans",    h:"Bengals",    fav:"h", sp:10,   when:"Sun 1:00"},
+  {a:"Chargers",  h:"Rams",       fav:"h", sp:6.5,  when:"Sun 4:05"},
+  {a:"Chiefs",    h:"Broncos",    fav:"a", sp:1.5,  when:"Sun 4:25"},
+  {a:"Patriots",  h:"Dolphins",   fav:"a", sp:7,    when:"Sun 4:25"},
+  {a:"Eagles",    h:"Commanders", fav:"h", sp:5.5,  when:"Sun 8:20"},
+  {a:"Bears",     h:"Seahawks",   fav:"h", sp:3,    when:"Mon 8:15"}
  ],
  // side: "a" or "h" — which team of that game you took
- picks:[]
+ picks:[
+  {g:8,  side:"h", stake:3500},   // BENGALS -10 vs titans
+  {g:5,  side:"h", stake:2000},   // JAGUARS -9.5 vs colts
+  {g:12, side:"h", stake:1500}    // COMMANDERS -5.5 vs eagles
+ ]
 };
 
 var TEAMS={Cardinals:"ARI",Falcons:"ATL",Ravens:"BAL",Bills:"BUF",Panthers:"CAR",
