@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Cover Tracker — Live</title>
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
@@ -39,7 +39,11 @@
 }}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-text-size-adjust:100%;
+  touch-action:manipulation}
+/* no pinch / double-tap zoom — fixed layout, nothing to magnify */
+html{touch-action:manipulation;-webkit-text-size-adjust:100%}
+button,.opt{touch-action:manipulation}
 .wrap{max-width:720px;margin:0 auto;padding-inline:16px;
   padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(48px + env(safe-area-inset-bottom,0px))}
 header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
@@ -201,6 +205,17 @@ function slot(p){ if(!live[key(p)]) live[key(p)]={pts:null,opp:null,status:"",li
 function fmt(n){ return n.toLocaleString("en-US"); }
 function signed(n){ return (n>0?"+":n<0?"−":"")+fmt(Math.abs(n)); }
 function half(n){ var a=Math.abs(n); return (n>0?"+":n<0?"−":"")+(a%1?a.toFixed(1):String(a)); }
+
+/* sort key from a game's "when" string, e.g. "Thu 8:15", "Sun 9:30", "Sun 4:25".
+   NFL week order Thu->Mon; times are 12-hour with no am/pm, and the only
+   morning kickoff is the 9:30 international game, so 9-11 is am, else pm. */
+var DAYNUM={Thu:0,Fri:1,Sat:2,Sun:3,Mon:4};
+function kickoff(g){
+  var m=/^(\w{3})\s+(\d{1,2}):(\d{2})/.exec(g&&g.when||"");
+  if(!m) return 9999;
+  var h=+m[2]; if(h<9) h+=12;          // 1:00 -> 13:00, 8:20 -> 20:20
+  return (DAYNUM[m[1]]==null?8:DAYNUM[m[1]])*100 + h + (+m[3])/60;
+}
 function bare(n){ var a=Math.abs(n); return a%1?a.toFixed(1):String(a); }
 function cushion(p){ var s=slot(p);
   if(s.pts===null||s.opp===null) return null;
@@ -259,7 +274,9 @@ function render(){
     e2.innerHTML="<b>No picks set.</b> Tap Edit picks and choose three teams from this week's slate.";
     cards.appendChild(e2);
   }
-  DATA.picks.forEach(function(p){ cards.appendChild(card(p)); });
+  DATA.picks.slice()
+    .sort(function(x,y){ return kickoff(game(x))-kickoff(game(y)); })
+    .forEach(function(p){ cards.appendChild(card(p)); });
   root.appendChild(cards);
 
   var f=el("footer");
@@ -422,6 +439,12 @@ function poll(manual){
       else { stampMsg="Retrying…"; }
       render(); });
 }
+
+/* iOS Safari ignores user-scalable=no, so block pinch-zoom directly.
+   touch-action:manipulation in the CSS handles double-tap zoom. */
+["gesturestart","gesturechange","gestureend"].forEach(function(evt){
+  document.addEventListener(evt,function(e){ e.preventDefault(); },{passive:false});
+});
 
 render();
 poll(true);
